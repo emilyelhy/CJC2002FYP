@@ -15,13 +15,17 @@ class Ultrasonic:
         self.sumTime = 0.0
         self.deltaTime = 0.0
         self.lastTime = 0.0
+        # use for average (filter)
+        self.array = [0.0 for i in range(5)]
 
+    # didn't use
     def getDeltaTime(self):
         self.nowTime = utime.ticks_ms()
         self.deltaTime = self.nowTime - self.lastTime
         self.lastTime = self.nowTime
         return self.deltaTime
 
+    # didn't use
     def getCount(self, interval):
         self.sumTime += self.getDeltaTime()
         if self.sumTime >= interval:
@@ -29,6 +33,16 @@ class Ultrasonic:
             return True
         else:
             return False
+
+    def addAverage(self, input):
+        for i in range(5):
+            index = 4 - i
+            if index > 0:
+                self.array[index] = self.array[index-1]
+        self.array[0] = input
+        sum = 0.0
+        for i in range(5): sum = sum + self.array[i]
+        return (sum / 5)
 
     def loop(self):
         self.trig.value(1)
@@ -40,6 +54,7 @@ class Ultrasonic:
         else:
             self.distance = 0.0
         # print("distance(in mm):", self.distance)
+        self.distance = self.addAverage(self.distance)
         self.distance = "{:.2f}".format(self.distance)
         command = "U" + str(self.distance)
         print(command)
@@ -49,6 +64,7 @@ class Ultrasonic:
 
 if __name__ == "__main__":
     # ultrasonic sensor ranges from 20mm to 4500mm
+    u = Ultrasonic()
     print("Start receiving")
     while True:
-        Ultrasonic().loop()
+        u.loop()

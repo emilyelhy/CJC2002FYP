@@ -10,6 +10,8 @@ class Ultrasonic:
         self.trig = machine.Pin(17, machine.Pin.OUT)
         self.echo = machine.Pin(16, machine.Pin.IN)
         self.time = 0.0
+        self.distance = 0.0
+        self.range = 0
         # below use for counting time interval
         self.nowTime = 0.0
         self.sumTime = 0.0
@@ -44,6 +46,35 @@ class Ultrasonic:
         for i in range(5): sum = sum + self.array[i]
         return (sum / 5)
 
+    def determineRange(self, input):
+        if input == 0.0:
+            return 0
+        if input <= 40.0:
+            return 1
+        if input <= 80.0:
+            return 2
+        if input <= 120.0:
+            return 3
+        if input <= 160.0:
+            return 4
+        if input <= 200.0:
+            return 5
+        if input <= 240.0:
+            return 6
+        if input <= 280.0:
+            return 7
+        if input <= 320.0:
+            return 8
+        if input <= 360.0:
+            return 9
+        if input <= 400.0:
+            return 10
+        if input <= 440.0:
+            return 11
+        if input <= 480.0:
+            return 12
+        return 13
+
     def loop(self):
         self.trig.value(1)
         utime.sleep_ms(50)
@@ -56,16 +87,19 @@ class Ultrasonic:
         # print("distance(in mm):", self.distance)
         self.distance = self.addAverage(self.distance)
         # self.distance = "{:.2f}".format(self.distance)
-        self.distance = int(self.distance)
-        command = "U" + str(self.distance)
+        # self.distance = int(self.distance)
+        self.range = self.determineRange(self.distance)
+        command = "U" + str(self.range)
         print(command)
-        self.Serial2.write(command)
+        # print(command, "distance: ", "{:.2f}".format(self.distance))
+        # self.Serial2.write(command)
         self.time = 0.0
         self.distance = 0.0
+        self.range = 0
 
 if __name__ == "__main__":
     # ultrasonic sensor ranges from 20mm to 4500mm
     u = Ultrasonic()
-    print("Start receiving")
+    # print("Start receiving")
     while True:
         u.loop()

@@ -6,17 +6,23 @@ class Flex:
         # serial write
         self.Serial2 = machine.UART(2)
         self.Serial2.init(115200, bits=8, parity=None, stop=1)
-        # flex sensor
-        self.thumb = machine.ADC(machine.Pin(32))
-        self.index = machine.ADC(machine.Pin(35))
+        # # flex sensor
+        # self.thumb = machine.ADC(machine.Pin(32))
+        # self.index = machine.ADC(machine.Pin(35))
+        # self.middle = machine.ADC(machine.Pin(34))
+        # self.ring = machine.ADC(machine.Pin(36))
+        # self.little = machine.ADC(machine.Pin(39))
+        self.thumb = machine.ADC(machine.Pin(39))
+        self.index = machine.ADC(machine.Pin(36))
         self.middle = machine.ADC(machine.Pin(34))
-        self.ring = machine.ADC(machine.Pin(36))
-        self.little = machine.ADC(machine.Pin(39))
+        self.ring = machine.ADC(machine.Pin(35))
+        self.little = machine.ADC(machine.Pin(32))
         # flex const
         self.max = [4095, 1420, 1420, 1350, 4095]
         self.straight = [1700, 700, 700, 700, 1700]
         # flex value
         self.value = [0, 0, 0, 0, 0]
+        self.range = [0, 0, 0, 0, 0]
 
     def loop(self):
         self.value[0] = self.thumb.read()
@@ -31,10 +37,13 @@ class Flex:
             elif self.value[i] >self.max[i]:
                 self.value[i] = self.max[i]
             self.value[i] = (self.value[i] - self.straight[i]) / (self.max[i] - self.straight[i])
-            self.value[i] = "{:.2f}".format(self.value[i])
-        command = "F" + str(self.value)
+            # self.value[i] = "{:.2f}".format(self.value[i])
+            if self.value[i] < 0.4:
+                self.range[i] = 0
+            else: self.range[i] = 1
+        command = "F" + str(self.range)
         print(command)
-        self.Serial2.write(command)
+        # self.Serial2.write(command)
         sleep(0.05)
 
 if __name__ == "__main__":
@@ -42,19 +51,3 @@ if __name__ == "__main__":
     print("Start Receiving")
     while True:
         f.loop()
-
-# test = ADC(Pin(39))
-# min = 1000
-# straight = 1500
-# max = 4095
-
-# while True:
-#     value = test.read()
-#     if value < straight:
-#         value = straight
-#     elif value > max:
-#         value = max
-#     value = (value - straight) / (max - straight)
-#     value = "{:.2f}".format(value)
-#     print("[F]", value)
-#     sleep(0.05)

@@ -55,7 +55,8 @@ class Ultrasonic:
             self.distance = 0.0
         # print("distance(in mm):", self.distance)
         self.distance = self.addAverage(self.distance)
-        self.distance = "{:.2f}".format(self.distance)
+        # self.distance = "{:.2f}".format(self.distance)
+        self.distance = int(self.distance)
         command = "U" + str(self.distance)
         print(command)
         self.Serial2.write(command)

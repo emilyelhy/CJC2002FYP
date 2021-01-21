@@ -37,11 +37,11 @@ class Flex:
             elif self.value[i] >self.max[i]:
                 self.value[i] = self.max[i]
             self.value[i] = (self.value[i] - self.straight[i]) / (self.max[i] - self.straight[i])
-            # self.value[i] = "{:.2f}".format(self.value[i])
-            if self.value[i] < 0.4:
-                self.range[i] = 0
-            else: self.range[i] = 1
-        command = "F" + str(self.range)
+            self.value[i] = int(float("{:.2f}".format(self.value[i])) * 100)
+            # if self.value[i] < 0.4:
+            #     self.range[i] = 0
+            # else: self.range[i] = 1
+        command = "F" + str(self.value)
         print(command)
         # self.Serial2.write(command)
         sleep(0.05)

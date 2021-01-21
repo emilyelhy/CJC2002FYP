@@ -79,7 +79,7 @@ class Ultrasonic:
         self.trig.value(1)
         utime.sleep_ms(50)
         self.trig.value(0)
-        self.time = machine.time_pulse_us(self.echo, 1)
+        self.time = machine.time_pulse_us(self.echo, 1, 50*1000)
         if self.time > 0 and self.time < 26471:         # becoz sensor ranges from 20mm-4500mm
             self.distance = (self.time*0.34) / 2
         else:

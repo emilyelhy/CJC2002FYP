@@ -1,9 +1,9 @@
 import socket
 
-# HOST = '192.168.x.x'
+HOST = '192.168.254.84'
 PORT = 8964
 
-with socket.socket(AF_INET, SOCK_STREAM, 0) as sd:
+with socket.socket(socket.AF_INET, socket.SOCK_STREAM, 0) as sd:
     sd.connect((HOST, PORT))
     sendData = 'ABCDEFGH'.encode('utf-8')
     sd.sendall(sendData)

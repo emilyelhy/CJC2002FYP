@@ -1,5 +1,6 @@
 import machine
 import utime
+import socket
 
 class Ultrasonic:
     def __init__(self):
@@ -19,6 +20,11 @@ class Ultrasonic:
         self.lastTime = 0.0
         # use for average (filter)
         self.array = [0.0 for i in range(5)]
+        # server connection
+        self.HOST = '172.20.10.4'
+        self.PORT = 8964
+        self.sd = socket.socket(socket.AF_INET, socket.SOCK_STREAM, 0)
+        if(self.sd) self.sd.connect((self.HOST, self.PORT))
 
     # didn't use
     def getDeltaTime(self):
@@ -91,6 +97,7 @@ class Ultrasonic:
         # self.range = self.determineRange(self.distance)
         command = "U" + str(self.distance)
         print(command)
+        self.sd.sendall(command.encode('utf-8'))
         # print(command, "distance: ", "{:.2f}".format(self.distance))
         # self.Serial2.write(command)
         self.time = 0.0
@@ -102,4 +109,5 @@ if __name__ == "__main__":
     u = Ultrasonic()
     # print("Start receiving")
     while True:
-        u.loop()
+        with self.sd:
+            u.loop()

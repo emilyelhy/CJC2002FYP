@@ -23,6 +23,11 @@ class Flex:
         # flex value
         self.value = [0, 0, 0, 0, 0]
         self.range = [0, 0, 0, 0, 0]
+        # server connection
+        self.HOST = '172.20.10.4'
+        self.PORT = 8964
+        self.sd = socket.socket(socket.AF_INET, socket.SOCK_STREAM, 0)
+        if(self.sd) self.sd.connect((self.HOST, self.PORT))
 
     def loop(self):
         self.value[0] = self.thumb.read()
@@ -43,11 +48,13 @@ class Flex:
             # else: self.range[i] = 1
         command = "F" + str(self.value)
         print(command)
+        self.sd.sendall(command.encode('utf-8'))
         # self.Serial2.write(command)
         sleep(0.05)
 
 if __name__ == "__main__":
     f = Flex()
     print("Start Receiving")
-    while True:
-        f.loop()
+    while True:        
+        with self.sd:
+            f.loop()

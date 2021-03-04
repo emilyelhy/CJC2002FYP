@@ -1,5 +1,12 @@
 import machine
 from time import sleep
+import socket
+import network
+
+HOST = '172.20.10.4'
+PORT = 8964
+SSID = 'Hei Yiu\'s iPhone'
+PSWD = '16121998'
 
 class Flex:
     def __init__(self):
@@ -23,11 +30,17 @@ class Flex:
         # flex value
         self.value = [0, 0, 0, 0, 0]
         self.range = [0, 0, 0, 0, 0]
+        # network connection
+        self.sta = network.WLAN(network.STA_IF)
+        self.sta.active(True)
+        print(self.sta.scan())
+        # while not self.sta.isconnected():
+        #     self.sta.connect(SSID, PSWD)
+        print("Connected to Wifi with SSID", SSID)
         # server connection
-        self.HOST = '172.20.10.4'
-        self.PORT = 8964
         self.sd = socket.socket(socket.AF_INET, socket.SOCK_STREAM, 0)
-        if(self.sd) self.sd.connect((self.HOST, self.PORT))
+        if(self.sd):
+            self.sd.connect((HOST, PORT))
 
     def loop(self):
         self.value[0] = self.thumb.read()

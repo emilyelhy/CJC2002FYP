@@ -2,6 +2,7 @@ import machine
 from time import sleep
 import socket
 import network
+import sys
 
 HOST = '172.20.10.4'
 PORT = 8964
@@ -34,13 +35,22 @@ class Flex:
         self.sta = network.WLAN(network.STA_IF)
         self.sta.active(True)
         print(self.sta.scan())
+        sleep(2)
+        print("SSID:", SSID)
+        print("PW:", PSWD)
         # while not self.sta.isconnected():
-        #     self.sta.connect(SSID, PSWD)
-        print("Connected to Wifi with SSID", SSID)
-        # server connection
-        self.sd = socket.socket(socket.AF_INET, socket.SOCK_STREAM, 0)
-        if(self.sd):
-            self.sd.connect((HOST, PORT))
+        for i in range(3):
+            print("Attempt ", i)
+            self.sta.connect(SSID, PSWD)
+            sleep(2)
+        if self.sta.isconnected():
+            print(sta.ifconfig())
+            print("Connected to Wifi with SSID", SSID)
+            # server connection
+            self.sd = socket.socket(socket.AF_INET, socket.SOCK_STREAM, 0)
+            if(self.sd):
+                self.sd.connect((HOST, PORT))
+        else: sys.exit()
 
     def loop(self):
         self.value[0] = self.thumb.read()

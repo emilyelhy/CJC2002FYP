@@ -6,8 +6,8 @@ import sys
 
 HOST = '172.20.10.4'
 PORT = 8964
-SSID = 'Hei Yiu\'s iPhone'
-PSWD = '16121998'
+SSID = 'Mars'
+PSWD = '12345678'
 
 class Flex:
     def __init__(self):
@@ -34,22 +34,17 @@ class Flex:
         # network connection
         self.sta = network.WLAN(network.STA_IF)
         self.sta.active(True)
-        print(self.sta.scan())
-        sleep(2)
-        print("SSID:", SSID)
-        print("PW:", PSWD)
-        # while not self.sta.isconnected():
-        for i in range(3):
-            print("Attempt ", i)
+        while not self.sta.isconnected():
             self.sta.connect(SSID, PSWD)
-            sleep(2)
+            sleep(3)
         if self.sta.isconnected():
-            print(sta.ifconfig())
             print("Connected to Wifi with SSID", SSID)
             # server connection
             self.sd = socket.socket(socket.AF_INET, socket.SOCK_STREAM, 0)
             if(self.sd):
                 self.sd.connect((HOST, PORT))
+                print("Connected to server with HOST", HOST, "and PORT", PORT)
+            else: print("Fail to connect to server with HOST", HOST, "and PORT", PORT)
         else: sys.exit()
 
     def loop(self):

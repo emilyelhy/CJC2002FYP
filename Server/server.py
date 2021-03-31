@@ -1,7 +1,7 @@
 import socket
 
 # HOST = socket.gethostname()
-HOST = '172.20.10.4'
+HOST = '192.168.118.134'
 PORT = 8964
 print(HOST, PORT)
 
@@ -9,6 +9,7 @@ print(HOST, PORT)
 while True:
     sd = socket.socket(socket.AF_INET, socket.SOCK_STREAM, 0)
     sd.bind((HOST, PORT))
+    print("Bind to HOST", HOST, "with PORT", PORT)
     sd.listen(1)
     conn, addr = sd.accept()
     with conn:
@@ -17,5 +18,5 @@ while True:
             data = conn.recv(1024)
             if not data:
                 break
-            conn.sendall(data)
-            print("Received and Sent: ", data.decode('utf-8'))
+            # conn.sendall(data)
+            print("Received: ", data.decode('utf-8'))

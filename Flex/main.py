@@ -4,10 +4,10 @@ import socket
 import network
 import sys
 
-HOST = '172.20.10.4'
+HOST = '192.168.118.134'
 PORT = 8964
-SSID = 'Mars'
-PSWD = '12345678'
+SSID = 'SSID'
+PSWD = 'PW'
 
 class Flex:
     def __init__(self):
@@ -42,10 +42,16 @@ class Flex:
             # server connection
             self.sd = socket.socket(socket.AF_INET, socket.SOCK_STREAM, 0)
             if(self.sd):
-                self.sd.connect((HOST, PORT))
-                print("Connected to server with HOST", HOST, "and PORT", PORT)
-            else: print("Fail to connect to server with HOST", HOST, "and PORT", PORT)
-        else: sys.exit()
+                try:
+                    self.sd.connect((HOST, PORT))
+                    print("Connected to server with HOST", HOST, "and PORT", PORT)
+                except:
+                    print("Fail to connect to server with HOST", HOST, "and PORT", PORT)
+                    sys.exit()
+        else:
+            # actually will not enter this lol
+            print("Fail to connect to Wifi with SSID", SSID)
+            sys.exit()
 
     def loop(self):
         self.value[0] = self.thumb.read()

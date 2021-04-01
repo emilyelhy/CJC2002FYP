@@ -6,8 +6,8 @@ import sys
 
 HOST = '192.168.118.134'
 PORT = 8964
-SSID = 'SSID'
-PSWD = 'PW'
+SSID = 'Mars'
+PSWD = '12345678'
 
 class Flex:
     def __init__(self):
@@ -15,11 +15,6 @@ class Flex:
         self.Serial2 = machine.UART(2)
         self.Serial2.init(115200, bits=8, parity=None, stop=1)
         # # flex sensor
-        # self.thumb = machine.ADC(machine.Pin(32))
-        # self.index = machine.ADC(machine.Pin(35))
-        # self.middle = machine.ADC(machine.Pin(34))
-        # self.ring = machine.ADC(machine.Pin(36))
-        # self.little = machine.ADC(machine.Pin(39))
         self.thumb = machine.ADC(machine.Pin(39))
         self.index = machine.ADC(machine.Pin(36))
         self.middle = machine.ADC(machine.Pin(34))
@@ -43,7 +38,7 @@ class Flex:
             self.sd = socket.socket(socket.AF_INET, socket.SOCK_STREAM, 0)
             if(self.sd):
                 try:
-                    self.sd.connect((HOST, PORT))
+                    self.sd.connect(HOST, PORT)
                     print("Connected to server with HOST", HOST, "and PORT", PORT)
                 except:
                     print("Fail to connect to server with HOST", HOST, "and PORT", PORT)

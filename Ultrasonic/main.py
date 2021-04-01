@@ -1,6 +1,14 @@
 import machine
 import utime
 import socket
+from time import sleep
+import  network
+import sys
+
+HOST = '192.168.118.134'
+PORT = 8964
+SSID = 'Mars'
+PSWD = '12345678'
 
 class Ultrasonic:
     def __init__(self):
@@ -20,11 +28,27 @@ class Ultrasonic:
         self.lastTime = 0.0
         # use for average (filter)
         self.array = [0.0 for i in range(5)]
-        # server connection
-        self.HOST = '172.20.10.4'
-        self.PORT = 8964
-        self.sd = socket.socket(socket.AF_INET, socket.SOCK_STREAM, 0)
-        if(self.sd) self.sd.connect((self.HOST, self.PORT))
+        # network connection
+        self.sta = network.WLAN(network.STA_IF)
+        self.sta.active(True)
+        while not self.sta.isconnected():
+            self.sta.connect(SSID, PSWD)
+            sleep(3)
+        if self.sta.isconnected():
+            print("Connected to Wifi with SSID", SSID)
+            # server connection
+            self.sd = socket.socket(socket.AF_INET, socket.SOCK_STREAM, 0)
+            if(self.sd):
+                try:
+                    self.sd.connect(HOST, PORT)
+                    print("Connected to server with HOST", HOST, "and PORT", PORT)
+                except:
+                    print("Fail to connect to server with HOST", HOST, "and PORT", PORT)
+                    sys.exit()
+            else:
+                # actually will not enter this
+                print("Fail to connect to Wifi with SSID", SSID)
+                sys.exit()
 
     # didn't use
     def getDeltaTime(self):

@@ -1,6 +1,6 @@
 import machine
 from time import sleep
-import socket
+import usocket
 import network
 import sys
 
@@ -35,13 +35,17 @@ class Flex:
         if self.sta.isconnected():
             print("Connected to Wifi with SSID", SSID)
             # server connection
-            self.sd = socket.socket(socket.AF_INET, socket.SOCK_STREAM, 0)
+            # work on my pc
+            # self.sd = usocket.socket(usocket.AF_INET, usocket.SOCK_STREAM, 0)
+            # mars u try this
+            self.sd = usocket.socket(usocket.AF_INET6, usocket.SOCK_STREAM, 0)
             if(self.sd):
                 try:
-                    self.sd.connect(HOST, PORT)
+                    self.sd.connect(usocket.getaddrinfo(HOST, PORT)[0][-1])
                     print("Connected to server with HOST", HOST, "and PORT", PORT)
-                except:
+                except Exception as e:
                     print("Fail to connect to server with HOST", HOST, "and PORT", PORT)
+                    print(e)
                     sys.exit()
         else:
             # actually will not enter this lol
@@ -75,5 +79,4 @@ if __name__ == "__main__":
     f = Flex()
     print("Start Receiving")
     while True:        
-        with self.sd:
-            f.loop()
+        f.loop()

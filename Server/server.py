@@ -1,7 +1,7 @@
 import socket
 
 # HOST = socket.gethostname()
-HOST = '192.168.118.134'
+HOST = '192.168.118.122'
 PORT = 8964
 print(HOST, PORT)
 

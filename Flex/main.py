@@ -36,9 +36,9 @@ class Flex:
             print("Connected to Wifi with SSID", SSID)
             # server connection
             # work on my pc
-            # self.sd = usocket.socket(usocket.AF_INET, usocket.SOCK_STREAM, 0)
+            self.sd = usocket.socket(usocket.AF_INET, usocket.SOCK_STREAM, 0)
             # mars u try this
-            self.sd = usocket.socket(usocket.AF_INET6, usocket.SOCK_STREAM, 0)
+            # self.sd = usocket.socket(usocket.AF_INET6, usocket.SOCK_STREAM, 0)
             if(self.sd):
                 try:
                     self.sd.connect(usocket.getaddrinfo(HOST, PORT)[0][-1])

@@ -121,6 +121,7 @@ class Ultrasonic:
         # print("distance(in mm):", self.distance)
         self.distance = self.addAverage(self.distance)
         # self.distance = "{:.2f}".format(self.distance)
+        if self.distance > 1000: self.distance = 1000
         self.distance = int(self.distance)
         # self.range = self.determineRange(self.distance)
         command = "U" + str(self.distance)

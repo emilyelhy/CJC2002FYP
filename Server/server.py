@@ -16,7 +16,7 @@ def newConnection(conn, CLIENTS):
 
 def main():
     HOST = '192.168.118.122'
-    PORT = 8964
+    PORT = 6000
     CLIENTS = []
     print(HOST, PORT)
     sd = socket.socket(socket.AF_INET, socket.SOCK_STREAM, 0)

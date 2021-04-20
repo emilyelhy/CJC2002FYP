@@ -6,7 +6,7 @@ import  network
 import sys
 
 HOST = '192.168.118.122'
-PORT = 8964
+PORT = 6000
 SSID = 'Mars'
 PSWD = '12345678'
 
